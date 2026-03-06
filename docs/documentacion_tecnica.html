@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Documentación Técnica — Torneo Interfacultades</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a1a; --green-light: #2d9e2d; --green-pale: #e8f5e8;
+    --green-mid: #c3e6c3; --dark: #0f1a0f; --gray: #4a5a4a;
+    --gray-light: #f4f7f4; --white: #ffffff; --accent: #00c853;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gray-light); color: var(--dark); line-height: 1.7; }
+
+  .hero { background: var(--dark); color: white; padding: 64px 80px 56px; position: relative; overflow: hidden; }
+  .hero::after { content: '🛠️'; position: absolute; bottom: -20px; right: 80px; font-size: 140px; opacity: 0.06; }
+  .hero-badge { display: inline-block; background: rgba(0,200,83,0.15); border: 1px solid rgba(0,200,83,0.3); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { color: rgba(255,255,255,0.55); font-size: 15px; font-weight: 300; }
+  .hero-meta { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .hero-meta-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 56px 40px; }
+  .section { margin-bottom: 56px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .section-number { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); background: var(--green-pale); border: 1px solid var(--green-mid); padding: 4px 10px; border-radius: 6px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
+  p { color: var(--gray); font-size: 15px; margin-bottom: 16px; }
+  hr { border: none; border-top: 1px solid #e8f0e8; margin: 48px 0; }
+
+  /* Tech table */
+  .tech-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .tech-table thead tr { background: var(--dark); }
+  .tech-table thead th { padding: 14px 18px; text-align: left; color: white; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .tech-table tbody tr { border-bottom: 1px solid #f0f4f0; transition: background 0.15s; }
+  .tech-table tbody tr:hover { background: var(--green-pale); }
+  .tech-table tbody tr:last-child { border-bottom: none; }
+  .tech-table tbody td { padding: 14px 18px; color: var(--gray); font-size: 14px; vertical-align: top; }
+  .tech-name { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--dark); }
+  .tech-version { font-family: 'DM Mono', monospace; font-size: 12px; background: var(--green-pale); color: var(--green); padding: 2px 8px; border-radius: 4px; border: 1px solid var(--green-mid); }
+
+  /* MVC Cards */
+  .mvc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .mvc-card { background: white; border-radius: 12px; padding: 24px; border-top: 4px solid var(--green); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .mvc-icon { font-size: 28px; margin-bottom: 12px; }
+  .mvc-label { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--green); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; }
+  .mvc-file { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--dark); font-weight: 700; margin-bottom: 8px; }
+  .mvc-desc { font-size: 13px; color: var(--gray); }
+
+  /* Diagram */
+  .diagram {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 20px;
+    line-height: 2;
+    overflow-x: auto;
+  }
+  .diagram .hi { color: var(--accent); }
+  .diagram .dim { color: rgba(255,255,255,0.3); }
+
+  /* Entity table */
+  .entity-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .entity-table thead tr { background: var(--dark); }
+  .entity-table thead th { padding: 14px 18px; text-align: left; color: white; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .entity-table tbody tr { border-bottom: 1px solid #f0f4f0; }
+  .entity-table tbody tr:last-child { border-bottom: none; }
+  .entity-table tbody td { padding: 14px 18px; color: var(--gray); font-size: 13px; vertical-align: top; }
+  .entity-name { font-family: 'Syne', sans-serif; font-weight: 700; color: var(--dark); font-size: 14px; }
+  .attrs { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gray); line-height: 1.8; }
+
+  /* Code block */
+  .code-block {
+    background: var(--dark);
+    border-radius: 10px;
+    padding: 20px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 16px;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+  .code-block .kw { color: #ff79c6; }
+  .code-block .fn { color: #50fa7b; }
+  .code-block .cm { color: rgba(255,255,255,0.3); }
+  .code-block .st { color: #f1fa8c; }
+
+  /* File tree */
+  .file-tree {
+    background: var(--dark);
+    border-radius: 12px;
+    padding: 28px 32px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    line-height: 2.1;
+    margin-top: 16px;
+  }
+  .file-tree .folder { color: #8be9fd; }
+  .file-tree .pyfile { color: #50fa7b; }
+  .file-tree .txtfile { color: rgba(255,255,255,0.5); }
+  .file-tree .comment { color: rgba(255,255,255,0.3); }
+
+  /* Logic cards */
+  .logic-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .logic-card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .logic-card-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .logic-icon { width: 30px; height: 30px; background: var(--green-pale); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 15px; }
+  .logic-card p { font-size: 13px; margin: 0; }
+
+  .doc-footer { background: var(--dark); color: rgba(255,255,255,0.4); text-align: center; padding: 24px; font-size: 12px; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Ingeniería de Software</div>
+  <h1>Documentación<br><span>Técnica</span></h1>
+  <p class="hero-sub">Sistema de Gestión de Torneo Interfacultades de Fútbol</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="hero-meta-label">Arquitectura</span><span class="hero-meta-value">MVC</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Backend</span><span class="hero-meta-value">Python + Flask</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Base de datos</span><span class="hero-meta-value">SQLite</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">ORM</span><span class="hero-meta-value">SQLAlchemy</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.1</span><h2 class="section-title">Descripción General del Sistema</h2></div>
+    <p>El sistema es una aplicación web desarrollada con arquitectura <strong>MVC (Modelo-Vista-Controlador)</strong>, implementada en Python utilizando el microframework Flask. La persistencia de datos se realiza mediante una base de datos SQLite gestionada a través del ORM Flask-SQLAlchemy.</p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.2</span><h2 class="section-title">Tecnologías Utilizadas y Justificación</h2></div>
+    <table class="tech-table">
+      <thead><tr><th>Tecnología</th><th>Versión</th><th>Rol en el Sistema</th><th>Justificación</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tech-name">Python</span></td><td><span class="tech-version">3.10+</span></td><td>Lenguaje de programación base</td><td>Excelente para proyectos web, gran comunidad y sintaxis clara. Lenguaje definido para el proyecto.</td></tr>
+        <tr><td><span class="tech-name">Flask</span></td><td><span class="tech-version">3.0.0</span></td><td>Framework web (servidor, rutas, vistas)</td><td>Microframework ligero, ideal para proyectos académicos. Permite entender el flujo HTTP sin abstracción excesiva.</td></tr>
+        <tr><td><span class="tech-name">Flask-SQLAlchemy</span></td><td><span class="tech-version">3.1.1</span></td><td>ORM para base de datos</td><td>Permite trabajar con la BD usando objetos Python sin escribir SQL directamente, reduciendo errores.</td></tr>
+        <tr><td><span class="tech-name">SQLite</span></td><td><span class="tech-version">Integrado</span></td><td>Base de datos relacional</td><td>No requiere servidor separado. Ideal para proyectos pequeños. El archivo .db se genera automáticamente.</td></tr>
+        <tr><td><span class="tech-name">Jinja2</span></td><td><span class="tech-version">Incluido</span></td><td>Motor de plantillas HTML</td><td>Permite generar HTML dinámico desde Python con herencia de plantillas que evita repetición de código.</td></tr>
+        <tr><td><span class="tech-name">Bootstrap 5</span></td><td><span class="tech-version">5.3.0 CDN</span></td><td>Framework CSS para interfaz</td><td>Permite crear una interfaz responsive y profesional sin escribir CSS desde cero.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.3</span><h2 class="section-title">Arquitectura del Sistema</h2></div>
+    <p>El sistema sigue el patrón <strong>MVC</strong> de la siguiente manera:</p>
+    <div class="mvc-grid">
+      <div class="mvc-card">
+        <div class="mvc-icon">🗄️</div>
+        <div class="mvc-label">Modelo</div>
+        <div class="mvc-file">models.py</div>
+        <div class="mvc-desc">Define las clases Equipo, Jugador, Partido y Resultado, mapeadas a tablas en SQLite.</div>
+      </div>
+      <div class="mvc-card">
+        <div class="mvc-icon">🖼️</div>
+        <div class="mvc-label">Vista</div>
+        <div class="mvc-file">templates/</div>
+        <div class="mvc-desc">Plantillas HTML con Jinja2. Heredan de base.html para mantener consistencia visual.</div>
+      </div>
+      <div class="mvc-card">
+        <div class="mvc-icon">⚙️</div>
+        <div class="mvc-label">Controlador</div>
+        <div class="mvc-file">app.py</div>
+        <div class="mvc-desc">Rutas Flask que reciben peticiones HTTP, interactúan con los modelos y devuelven vistas.</div>
+      </div>
+    </div>
+    <div class="diagram">
+<span class="hi">Usuario</span><br>
+  │  HTTP Request<br>
+  ▼<br>
+<span class="hi">app.py</span> <span class="dim">─────────────</span> Controlador <span class="dim">(rutas @app.route)</span><br>
+  │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+  │ &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">models.py</span> <span class="dim">── Modelo (SQLAlchemy → SQLite)</span><br>
+  │<br>
+  └── <span class="hi">templates/</span> <span class="dim">─── Vista (Jinja2 → HTML)</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;│<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▼<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="hi">Navegador</span>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.4</span><h2 class="section-title">Modelo de Datos</h2></div>
+    <p>El sistema maneja cuatro entidades principales:</p>
+    <table class="entity-table" style="margin-top:16px">
+      <thead><tr><th>Entidad</th><th>Atributos Principales</th><th>Relaciones</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td><span class="entity-name">Equipo</span></td><td><div class="attrs">id, nombre, facultad<br>puntos, PJ, PG, PE, PP<br>goles_favor, goles_contra</div></td><td>1 equipo → N jugadores<br>1 equipo → N partidos</td><td>Representa a cada equipo participante del torneo.</td></tr>
+        <tr><td><span class="entity-name">Jugador</span></td><td><div class="attrs">id, nombre, numero<br>goles, equipo_id</div></td><td>N jugadores → 1 equipo</td><td>Cada jugador pertenece a un equipo y acumula goles.</td></tr>
+        <tr><td><span class="entity-name">Partido</span></td><td><div class="attrs">id, jornada<br>equipo_local_id<br>equipo_visitante_id<br>goles_local, goles_visitante<br>jugado</div></td><td>Referencia a 2 equipos (local y visitante)</td><td>Representa cada encuentro del calendario.</td></tr>
+        <tr><td><span class="entity-name">Resultado</span></td><td><div class="attrs">id, partido_id<br>descripcion</div></td><td>Referencia a un partido</td><td>Entidad auxiliar para observaciones adicionales del partido.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.5</span><h2 class="section-title">Lógica de Negocio Principal</h2></div>
+    <div class="logic-grid">
+      <div class="logic-card">
+        <div class="logic-card-title"><div class="logic-icon">📅</div>Generación del Calendario</div>
+        <p>Se utiliza el módulo <code>itertools.combinations</code> de Python para generar todos los enfrentamientos posibles (todos contra todos). Los pares se distribuyen en jornadas de n/2 partidos cada una.</p>
+        <div class="code-block" style="margin-top:12px">
+<span class="kw">from</span> itertools <span class="kw">import</span> combinations<br><br>
+pares = <span class="fn">list</span>(combinations(equipos, <span class="st">2</span>))<br>
+<span class="cm"># genera todos los enfrentamientos</span>
+        </div>
+      </div>
+      <div class="logic-card">
+        <div class="logic-card-title"><div class="logic-icon">📊</div>Actualización de la Tabla</div>
+        <p>Al registrar el resultado, el sistema evalúa automáticamente: victoria local → 3 pts al local; victoria visitante → 3 pts al visitante; empate → 1 pt a cada uno. También actualiza GF, GC y goles de goleadores.</p>
+        <div class="code-block" style="margin-top:12px">
+<span class="kw">if</span> goles_local > goles_visitante:<br>
+&nbsp;&nbsp;equipo_local.puntos += <span class="st">3</span><br>
+<span class="kw">elif</span> goles_visitante > goles_local:<br>
+&nbsp;&nbsp;equipo_visitante.puntos += <span class="st">3</span><br>
+<span class="kw">else</span>:<br>
+&nbsp;&nbsp;equipo_local.puntos += <span class="st">1</span><br>
+&nbsp;&nbsp;equipo_visitante.puntos += <span class="st">1</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">3.6</span><h2 class="section-title">Estructura de Archivos del Proyecto</h2></div>
+    <div class="file-tree">
+<span class="folder">torneo_futbol/</span><br>
+├── <span class="pyfile">app.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Rutas y controladores Flask</span><br>
+├── <span class="pyfile">models.py</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Modelos de base de datos (SQLAlchemy)</span><br>
+├── <span class="txtfile">requirements.txt</span> &nbsp;<span class="comment">← Dependencias del proyecto</span><br>
+├── <span class="txtfile">torneo.db</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Base de datos SQLite (auto-generada)</span><br>
+├── <span class="folder">templates/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Plantillas HTML (Jinja2)</span><br>
+│ &nbsp;&nbsp;├── base.html &nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Plantilla base con navbar</span><br>
+│ &nbsp;&nbsp;├── index.html &nbsp;&nbsp;&nbsp;<span class="comment">← Panel de inicio</span><br>
+│ &nbsp;&nbsp;├── <span class="folder">equipos/</span><br>
+│ &nbsp;&nbsp;├── <span class="folder">jugadores/</span><br>
+│ &nbsp;&nbsp;├── <span class="folder">calendario/</span><br>
+│ &nbsp;&nbsp;├── <span class="folder">resultados/</span><br>
+│ &nbsp;&nbsp;├── <span class="folder">tabla/</span><br>
+│ &nbsp;&nbsp;└── <span class="folder">reportes/</span><br>
+└── <span class="folder">docs/</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="comment">← Documentación del proyecto</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── plan_de_pruebas.html<br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── manual_usuario.html<br>
+&nbsp;&nbsp;&nbsp;&nbsp;├── documentacion_tecnica.html<br>
+&nbsp;&nbsp;&nbsp;&nbsp;└── estrategia_seguimiento.html
+    </div>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  Universidad X · Ingeniería de Software · Sistema Torneo Interfacultades 2024
+</div>
+</body>
+</html>

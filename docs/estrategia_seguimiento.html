@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Estrategia de Seguimiento — Torneo Interfacultades</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a1a; --green-light: #2d9e2d; --green-pale: #e8f5e8;
+    --green-mid: #c3e6c3; --dark: #0f1a0f; --gray: #4a5a4a;
+    --gray-light: #f4f7f4; --accent: #00c853;
+    --red: #d32f2f; --red-pale: #ffebee; --red-mid: #ffcdd2;
+    --yellow: #f9a825; --yellow-pale: #fff8e1; --yellow-mid: #ffe082;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gray-light); color: var(--dark); line-height: 1.7; }
+
+  .hero { background: var(--dark); color: white; padding: 64px 80px 56px; position: relative; overflow: hidden; }
+  .hero::after { content: '🔄'; position: absolute; bottom: -20px; right: 80px; font-size: 140px; opacity: 0.06; }
+  .hero-badge { display: inline-block; background: rgba(0,200,83,0.15); border: 1px solid rgba(0,200,83,0.3); color: var(--accent); font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { color: rgba(255,255,255,0.55); font-size: 15px; }
+  .hero-meta { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .hero-meta-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 56px 40px; }
+  .section { margin-bottom: 56px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .section-number { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); background: var(--green-pale); border: 1px solid var(--green-mid); padding: 4px 10px; border-radius: 6px; }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
+  p { color: var(--gray); font-size: 15px; margin-bottom: 16px; }
+  hr { border: none; border-top: 1px solid #e8f0e8; margin: 48px 0; }
+
+  /* Priority cards */
+  .priority-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+  .priority-card { background: white; border-radius: 12px; padding: 22px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .priority-card.high { border-top: 4px solid var(--red); }
+  .priority-card.medium { border-top: 4px solid var(--yellow); }
+  .priority-card.low { border-top: 4px solid var(--green); }
+  .priority-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700; margin-bottom: 12px; }
+  .badge-high { background: var(--red-pale); color: var(--red); border: 1px solid var(--red-mid); }
+  .badge-med { background: var(--yellow-pale); color: #7a4f00; border: 1px solid var(--yellow-mid); }
+  .badge-low { background: var(--green-pale); color: var(--green); border: 1px solid var(--green-mid); }
+  .priority-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; color: var(--dark); margin-bottom: 8px; }
+  .priority-example { font-size: 13px; color: var(--gray); margin-bottom: 10px; font-style: italic; }
+  .priority-time { font-family: 'DM Mono', monospace; font-size: 11px; padding: 3px 8px; border-radius: 4px; background: var(--gray-light); color: var(--gray); }
+
+  /* Process steps */
+  .process { display: flex; flex-direction: column; gap: 0; margin-top: 16px; }
+  .process-step { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px dashed #dce8dc; }
+  .process-step:last-child { border-bottom: none; }
+  .process-num { width: 32px; height: 32px; background: var(--green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 800; flex-shrink: 0; margin-top: 2px; }
+  .process-text { font-size: 14px; color: var(--gray); padding-top: 4px; }
+  .process-text code { font-family: 'DM Mono', monospace; font-size: 12px; background: var(--green-pale); color: var(--green); padding: 1px 6px; border-radius: 4px; }
+
+  /* Maintenance table */
+  .maint-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .maint-table thead tr { background: var(--dark); }
+  .maint-table thead th { padding: 14px 18px; text-align: left; color: white; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .maint-table tbody tr { border-bottom: 1px solid #f0f4f0; transition: background 0.15s; }
+  .maint-table tbody tr:hover { background: var(--green-pale); }
+  .maint-table tbody tr:last-child { border-bottom: none; }
+  .maint-table tbody td { padding: 14px 18px; color: var(--gray); font-size: 14px; vertical-align: middle; }
+  .freq-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: var(--green-pale); color: var(--green); border: 1px solid var(--green-mid); white-space: nowrap; }
+
+  /* Improvements */
+  .improvements-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px; }
+  .improvement-item { background: white; border-radius: 10px; padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start; box-shadow: 0 2px 6px rgba(0,0,0,0.04); }
+  .improvement-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--green-pale); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+  .improvement-text { font-size: 13px; color: var(--gray); }
+  .improvement-text strong { color: var(--dark); display: block; font-size: 13px; margin-bottom: 3px; }
+
+  /* Backup */
+  .backup-steps { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+  .backup-step { background: white; border-radius: 8px; padding: 14px 18px 14px 50px; font-size: 14px; color: var(--gray); position: relative; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+  .backup-step::before { content: attr(data-icon); position: absolute; left: 14px; top: 12px; font-size: 18px; }
+
+  /* Contact */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+  .contact-card { background: white; border-radius: 12px; padding: 22px; display: flex; gap: 16px; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .contact-icon { width: 46px; height: 46px; background: var(--green-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .contact-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--gray); margin-bottom: 4px; }
+  .contact-value { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--dark); font-weight: 700; }
+
+  .note-box { background: var(--yellow-pale); border-left: 4px solid var(--yellow); border-radius: 0 8px 8px 0; padding: 14px 18px; font-size: 13px; color: #5a4000; margin-top: 16px; }
+
+  .doc-footer { background: var(--dark); color: rgba(255,255,255,0.4); text-align: center; padding: 24px; font-size: 12px; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Ingeniería de Software</div>
+  <h1>Estrategia de<br><span>Seguimiento</span></h1>
+  <p class="hero-sub">Soporte y Mantenimiento Post-Proyecto — Torneo Interfacultades de Fútbol</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><span class="hero-meta-label">Universidad</span><span class="hero-meta-value">Universidad X</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Canal</span><span class="hero-meta-value">GitHub Issues</span></div>
+    <div class="hero-meta-item"><span class="hero-meta-label">Mejoras futuras</span><span class="hero-meta-value">6 propuestas</span></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.1</span><h2 class="section-title">Introducción</h2></div>
+    <p>Esta sección describe las acciones recomendadas para garantizar el correcto funcionamiento del sistema después de su entrega y despliegue inicial. El objetivo es mantener el sistema operativo, corregir posibles fallas y planear mejoras futuras.</p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.2</span><h2 class="section-title">Clasificación de Incidencias</h2></div>
+    <div class="priority-grid">
+      <div class="priority-card high">
+        <span class="priority-badge badge-high">🔴 Alta</span>
+        <div class="priority-title">Error crítico</div>
+        <div class="priority-example">"El sistema no inicia, no se puede registrar ningún resultado."</div>
+        <span class="priority-time">⏱ Menos de 24 horas</span>
+      </div>
+      <div class="priority-card medium">
+        <span class="priority-badge badge-med">🟡 Media</span>
+        <div class="priority-title">Error funcional</div>
+        <div class="priority-example">"Los goles del goleador no se están actualizando correctamente."</div>
+        <span class="priority-time">⏱ 2 a 3 días hábiles</span>
+      </div>
+      <div class="priority-card low">
+        <span class="priority-badge badge-low">🟢 Baja</span>
+        <div class="priority-title">Mejora menor</div>
+        <div class="priority-example">"Agregar filtro de búsqueda en la lista de jugadores."</div>
+        <span class="priority-time">⏱ 1 a 2 semanas</span>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.3</span><h2 class="section-title">Canal de Reporte de Errores</h2></div>
+    <p>Se recomienda utilizar el sistema de <strong>Issues de GitHub</strong> para el reporte de errores y sugerencias. El proceso es el siguiente:</p>
+    <div class="process">
+      <div class="process-step"><div class="process-num">1</div><div class="process-text">El usuario o administrador detecta un error o tiene una sugerencia de mejora.</div></div>
+      <div class="process-step"><div class="process-num">2</div><div class="process-text">Crea un <strong>Issue</strong> en el repositorio de GitHub describiendo el problema, los pasos para reproducirlo y el resultado esperado.</div></div>
+      <div class="process-step"><div class="process-num">3</div><div class="process-text">El equipo de desarrollo revisa el Issue, lo clasifica por prioridad y asigna un responsable.</div></div>
+      <div class="process-step"><div class="process-num">4</div><div class="process-text">El responsable desarrolla la corrección en una rama separada: <code>feature/fix-nombre-error</code>.</div></div>
+      <div class="process-step"><div class="process-num">5</div><div class="process-text">Se realizan pruebas de la corrección y se hace <strong>merge</strong> a la rama principal.</div></div>
+      <div class="process-step"><div class="process-num">6</div><div class="process-text">Se notifica al reportante que el error fue corregido y el Issue se cierra.</div></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.4</span><h2 class="section-title">Plan de Mantenimiento</h2></div>
+    <table class="maint-table">
+      <thead><tr><th>Frecuencia</th><th>Actividad</th><th>Responsable</th></tr></thead>
+      <tbody>
+        <tr><td><span class="freq-badge">Por torneo</span></td><td>Respaldar la base de datos <code style="font-family:monospace;font-size:12px;background:#e8f5e8;color:#1a7a1a;padding:1px 6px;border-radius:4px">torneo.db</code> y resetear los datos para el nuevo torneo</td><td>Administrador</td></tr>
+        <tr><td><span class="freq-badge">Mensual</span></td><td>Revisar el repositorio de GitHub en busca de Issues abiertos sin resolver</td><td>Equipo de desarrollo</td></tr>
+        <tr><td><span class="freq-badge">Semestral</span></td><td>Revisar actualizaciones de dependencias (Flask, SQLAlchemy) y aplicarlas</td><td>Equipo de desarrollo</td></tr>
+        <tr><td><span class="freq-badge">A demanda</span></td><td>Implementar nuevas funcionalidades solicitadas por los usuarios</td><td>Equipo de desarrollo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.5</span><h2 class="section-title">Mejoras Futuras Propuestas</h2></div>
+    <p>Con base en el análisis del sistema actual, se proponen las siguientes mejoras para versiones futuras:</p>
+    <div class="improvements-grid">
+      <div class="improvement-item"><div class="improvement-icon">🔐</div><div class="improvement-text"><strong>Módulo de autenticación</strong>Agregar login con usuario y contraseña para que solo personas autorizadas puedan registrar resultados.</div></div>
+      <div class="improvement-item"><div class="improvement-icon">🏆</div><div class="improvement-text"><strong>Fase eliminatoria</strong>Agregar soporte para semifinales y final después de la fase de grupos.</div></div>
+      <div class="improvement-item"><div class="improvement-icon">📄</div><div class="improvement-text"><strong>Generación de reportes PDF</strong>Permitir exportar la tabla de posiciones y goleadores en formato PDF.</div></div>
+      <div class="improvement-item"><div class="improvement-icon">📧</div><div class="improvement-text"><strong>Notificaciones</strong>Enviar correos automáticos a los equipos con el resultado después de cada partido.</div></div>
+      <div class="improvement-item"><div class="improvement-icon">📱</div><div class="improvement-text"><strong>Aplicación móvil</strong>Desarrollar una versión mobile-friendly con mejor experiencia en dispositivos pequeños.</div></div>
+      <div class="improvement-item"><div class="improvement-icon">📊</div><div class="improvement-text"><strong>Estadísticas avanzadas</strong>Tarjetas amarillas y rojas, asistencias, porterías a cero.</div></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.6</span><h2 class="section-title">Respaldo y Recuperación de Datos</h2></div>
+    <p>La base de datos del sistema es el archivo <code style="font-family:monospace;font-size:13px;background:#e8f5e8;color:#1a7a1a;padding:1px 8px;border-radius:4px">torneo.db</code> ubicado en la raíz del proyecto.</p>
+    <div class="backup-steps">
+      <div class="backup-step" data-icon="💾">Copiar el archivo <strong>torneo.db</strong> a una ubicación segura o a Google Drive antes de cada jornada importante.</div>
+      <div class="backup-step" data-icon="🔁">En caso de pérdida de datos, reemplazar el archivo <strong>torneo.db</strong> con la copia más reciente y reiniciar el servidor Flask.</div>
+    </div>
+    <div class="note-box">📝 <strong>Nota:</strong> Para una solución más robusta en producción, se recomienda migrar a PostgreSQL y configurar backups automáticos diarios.</div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header"><span class="section-number">4.7</span><h2 class="section-title">Contacto y Soporte</h2></div>
+    <p>Para reportar errores o solicitar soporte, utilizar los siguientes canales:</p>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">🐙</div>
+        <div>
+          <div class="contact-label">Repositorio GitHub</div>
+          <div class="contact-value">github.com/tu_usuario/torneo_futbol</div>
+        </div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Correo del equipo</div>
+          <div class="contact-value">equipo.torneo@universidad.edu.co</div>
+        </div>
+      </div>
+    </div>
+    <div class="note-box" style="margin-top:16px">⏱ <strong>Tiempo de respuesta:</strong> sujeto a la disponibilidad del equipo de desarrollo y a la prioridad de la incidencia según la clasificación de la sección 4.2.</div>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  Universidad X · Ingeniería de Software · Sistema Torneo Interfacultades 2024
+</div>
+</body>
+</html>

@@ -1,38 +1,107 @@
-2.1 Portada del Manual: pendiente
+# 📖 Manual Básico de Usuario
 
-2.2 Introducción:
+> Sistema de Gestión de Torneo Interfacultades de Fútbol · Universidad Catolica del Norte · 2026
 
-El presente manual de usuario tiene como finalidad orientar a los usuarios en el uso básico del sistema de gestión de torneos de fútbol universitario.
-En este documento se explican de manera sencilla las principales funcionalidades del sistema, permitiendo a los estudiantes y organizadores realizar el registro de equipos, la programación de partidos, el ingreso de resultados y la consulta de la tabla de posiciones.
+---
 
-2.3 ¿A quién va dirigido el sistema?:
+## 2.1 Introducción
 
-El sistema está dirigido principalmente a los organizadores del torneo de fútbol universitario y a los estudiantes participantes, quienes podrán consultar la información relacionada con los partidos, resultados y posiciones del torneo.
+Este manual tiene como objetivo guiar al usuario en el uso del Sistema de Gestión de Torneo Interfacultades de Fútbol. El sistema es una aplicación web accesible desde cualquier navegador moderno (Chrome, Firefox, Edge). No requiere instalación por parte del usuario final.
 
-2.4 Requisitos para usar el sistema:
+---
 
-Para utilizar el sistema, el usuario debe contar con:
-•	Un dispositivo con acceso a internet (computador o celular).
-•	Un navegador web actualizado.
-•	Credenciales de acceso, en caso de que el sistema lo requiera.
+## 2.2 Acceso al Sistema
 
-2.5 Funcionalidades del sistema:
+Abre tu navegador web e ingresa la siguiente dirección:
 
-1. Registro de equipos
-El organizador del torneo podrá registrar los equipos participantes ingresando información básica como el nombre del equipo y los jugadores que lo conforman.
-Una vez registrados, los equipos quedarán habilitados para participar en el torneo.
-2. Programación de partidos
-El sistema permite generar de manera automática el calendario de partidos del torneo, evitando cruces incorrectos y facilitando la organización de los encuentros deportivos.
-3. Registro de resultados
-El organizador podrá ingresar los resultados de cada partido una vez finalizado. El sistema almacenará esta información y la utilizará para actualizar la tabla de posiciones.
- 4. Consulta de tabla de posiciones
-Los usuarios podrán consultar en cualquier momento la tabla de posiciones del torneo, la cual se actualizará automáticamente según los resultados registrados.
+```
+http://127.0.0.1:5000
+```
 
-2.6 Recomendaciones de uso:
+Serás redirigido al panel principal donde encontrarás un resumen del estado del torneo y las acciones rápidas disponibles.
 
-Se recomienda a los usuarios verificar la información antes de registrarla en el sistema y realizar el ingreso de los resultados de manera oportuna, con el fin de garantizar la confiabilidad de la información publicada.
+---
 
-2.7 Cierre del manual:
+## 2.3 Navegación Principal
 
-Este manual presenta las funciones básicas del sistema de gestión de torneos de fútbol universitario. Su correcta utilización permitirá una mejor organización del torneo y una experiencia más ordenada para los usuarios.
+| Sección | Descripción |
+|---------|-------------|
+| 🛡️ **Equipos** | Listado, registro y detalle de equipos |
+| 👤 **Jugadores** | Listado y registro de jugadores |
+| 📅 **Calendario** | Visualización y generación del calendario de partidos |
+| 📊 **Tabla** | Tabla de posiciones actualizada en tiempo real |
+| 📈 **Reportes** | Estadísticas del torneo y tabla de goleadores |
 
+---
+
+## 2.4 Guía Paso a Paso
+
+### Paso 1 — Registrar Equipos
+
+1. Haz clic en **Equipos** en la barra de navegación.
+2. Haz clic en el botón verde **Nuevo Equipo**.
+3. Ingresa el nombre del equipo y la facultad a la que pertenece.
+4. Haz clic en **Registrar Equipo**. Verás un mensaje de confirmación en verde.
+
+> ⚠️ **Importante:** Debes registrar al menos 2 equipos antes de generar el calendario.
+
+---
+
+### Paso 2 — Registrar Jugadores
+
+1. Haz clic en **Jugadores** en la barra de navegación.
+2. Haz clic en **Nuevo Jugador**.
+3. Ingresa el nombre, número de camiseta (opcional) y selecciona el equipo.
+4. Haz clic en **Registrar Jugador**.
+
+> 📝 **Nota:** Registrar jugadores es opcional, pero necesario para marcar goleadores en los partidos.
+
+---
+
+### Paso 3 — Generar el Calendario
+
+1. Haz clic en **Calendario** en la barra de navegación.
+2. Si no hay partidos generados, verás el botón **Generar Calendario**.
+3. Haz clic en él. El sistema creará automáticamente todos los partidos en formato todos contra todos, organizados por jornadas.
+
+> ⚠️ **Importante:** El calendario solo puede generarse una vez. Si necesitas regenerarlo, contacta al administrador del sistema.
+
+---
+
+### Paso 4 — Registrar Resultados
+
+1. Ve a **Calendario**.
+2. Identifica el partido a registrar (estado: **Pendiente**).
+3. Haz clic en el botón **Registrar** en la fila del partido.
+4. Ingresa los goles anotados por cada equipo.
+5. Selecciona los jugadores que marcaron goles (puedes seleccionar varios).
+6. Haz clic en **Guardar Resultado**.
+
+> ℹ️ El sistema actualizará automáticamente la tabla de posiciones al guardar.
+
+---
+
+### Paso 5 — Ver la Tabla de Posiciones
+
+1. Haz clic en **Tabla** en la barra de navegación.
+2. Verás la tabla ordenada por puntos. En caso de empate, el criterio de desempate es la diferencia de goles.
+
+> 🥇 Los equipos en las primeras 3 posiciones se destacan visualmente.
+
+---
+
+### Paso 6 — Consultar Reportes
+
+1. Haz clic en **Reportes**.
+2. Verás el total de partidos jugados, pendientes y goles del torneo.
+3. La tabla de goleadores muestra los 10 jugadores con más goles.
+
+---
+
+## 2.5 Mensajes del Sistema
+
+| Tipo | Ejemplo | Significado |
+|------|---------|-------------|
+| ✅ **Verde — Éxito** | "Equipo registrado exitosamente" | La operación se completó sin problemas |
+| ⚠️ **Amarillo — Advertencia** | "El calendario ya fue generado" | La acción no se realizó para evitar duplicados |
+| ❌ **Rojo — Error** | "Ya existe un equipo con ese nombre" | Se ingresaron datos inválidos o duplicados |

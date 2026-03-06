@@ -1,44 +1,119 @@
-PASO 4: TECNOLOGÍAS UTILIZADAS Y JUSTIFICACIÓN DE SU SELECCIÓN:
+# 🛠️ Documentación Técnica
 
-4.1 Introducción:
+> Sistema de Gestión de Torneo Interfacultades de Fútbol · Universidad Catolica del Norte · 2026
 
-En este apartado se describen las tecnologías utilizadas en el desarrollo del sistema de gestión de torneos de fútbol universitario, así como la justificación de su selección.
-La elección de estas herramientas se realizó teniendo en cuenta el contexto académico del proyecto, la facilidad de uso y la adecuación a los objetivos planteados.
+---
 
-4.2 Lenguaje de programación:
+## 3.1 Descripción General del Sistema
 
-Python (con framework Django)
-Para el desarrollo del sistema se seleccionó el lenguaje de programación Python, utilizando el framework Django.
-Python fue elegido por ser un lenguaje sencillo, legible y de fácil aprendizaje, lo cual facilita el desarrollo rápido de aplicaciones web en contextos académicos. Django, por su parte, permite estructurar el proyecto de manera ordenada y segura.
+El sistema es una aplicación web desarrollada con arquitectura **MVC (Modelo-Vista-Controlador)**, implementada en Python utilizando el microframework Flask. La persistencia de datos se realiza mediante una base de datos SQLite gestionada a través del ORM Flask-SQLAlchemy.
 
-4.3 Base de datos:
+---
 
-Oracle Database
-Como sistema gestor de base de datos se utilizó Oracle, debido a que es una base de datos robusta, segura y ampliamente utilizada en entornos profesionales.
-Oracle garantiza la integridad de la información y un adecuado manejo de los datos relacionados con equipos, partidos, resultados y tablas de posiciones.
+## 3.2 Tecnologías Utilizadas y Justificación
 
-4.4 Control de versiones
+| Tecnología | Versión | Rol en el Sistema | Justificación |
+|------------|---------|-------------------|---------------|
+| **Python** | 3.10+ | Lenguaje de programación base | Excelente para proyectos web, gran comunidad y sintaxis clara. Lenguaje definido para el proyecto. |
+| **Flask** | 3.0.0 | Framework web — servidor, rutas, vistas | Microframework ligero, ideal para proyectos académicos. Permite entender el flujo HTTP sin abstracción excesiva. |
+| **Flask-SQLAlchemy** | 3.1.1 | ORM para base de datos | Permite trabajar con la base de datos usando objetos Python sin escribir SQL directamente, reduciendo errores. |
+| **SQLite** | Integrado | Base de datos relacional | No requiere servidor separado. El archivo `.db` se genera automáticamente al ejecutar la aplicación. |
+| **Jinja2** | Incluido en Flask | Motor de plantillas HTML | Genera HTML dinámico desde Python con herencia de plantillas, evitando repetición de código. |
+| **Bootstrap 5** | 5.3.0 (CDN) | Framework CSS para interfaz | Permite crear una interfaz responsive y profesional sin escribir CSS desde cero. |
 
-GitHub
-GitHub fue utilizado como repositorio del proyecto, permitiendo el control de versiones del código y la documentación.
-Esta herramienta facilita el trabajo colaborativo, el seguimiento de cambios y la organización del proyecto en un entorno profesional.
+---
 
-4.5 Gestión del proyecto
+## 3.3 Arquitectura del Sistema
 
-Trello
-Para la gestión del proyecto se utilizó Trello, el cual permitió organizar las tareas, los sprints y el avance del proyecto de manera visual.
-Esta herramienta facilitó la planificación y el seguimiento del trabajo del equipo durante el desarrollo del sistema.
+El sistema sigue el patrón **MVC** de la siguiente manera:
 
-4.6 Herramientas de modelado
+| Capa | Archivo | Responsabilidad |
+|------|---------|-----------------|
+| **Modelo** | `models.py` | Define las clases `Equipo`, `Jugador`, `Partido` y `Resultado`, mapeadas a tablas en SQLite |
+| **Vista** | `templates/` | Plantillas HTML con Jinja2 que heredan de `base.html` para mantener consistencia visual |
+| **Controlador** | `app.py` | Rutas Flask que reciben peticiones HTTP, interactúan con los modelos y devuelven las vistas |
 
-Draw.io / Lucidchart
-Las herramientas Draw.io o Lucidchart se utilizaron para la elaboración de diagramas, como diagramas de casos de uso y diagramas entidad–relación.
-Estas herramientas permiten representar de forma clara la estructura y funcionamiento del sistema, facilitando la comprensión del proyecto.
+**Flujo de una petición:**
 
-4.7 Cierre del documento:
+```
+Usuario
+  │  HTTP Request
+  ▼
+app.py ──── Controlador (@app.route)
+  │               │
+  │         models.py ──── SQLAlchemy ──── SQLite (torneo.db)
+  │
+  └──── templates/ ──── Jinja2 ──── HTML
+                │
+                ▼
+            Navegador
+```
 
-La selección de las tecnologías utilizadas en el proyecto responde a criterios de facilidad de uso, eficiencia y adecuación al contexto académico.
-Estas herramientas permitieron desarrollar un sistema organizado, funcional y alineado con los objetivos planteados.
+---
 
+## 3.4 Modelo de Datos
 
+El sistema maneja cuatro entidades principales:
 
+| Entidad | Atributos Principales | Relaciones | Descripción |
+|---------|-----------------------|------------|-------------|
+| **Equipo** | `id`, `nombre`, `facultad`, `puntos`, `PJ`, `PG`, `PE`, `PP`, `GF`, `GC` | 1 equipo → N jugadores · 1 equipo → N partidos | Representa a cada equipo participante del torneo |
+| **Jugador** | `id`, `nombre`, `numero`, `goles`, `equipo_id` | N jugadores → 1 equipo | Cada jugador pertenece a un equipo y acumula goles |
+| **Partido** | `id`, `jornada`, `equipo_local_id`, `equipo_visitante_id`, `goles_local`, `goles_visitante`, `jugado` | Referencia a 2 equipos | Representa cada encuentro del calendario |
+| **Resultado** | `id`, `partido_id`, `descripcion` | Referencia a un partido | Entidad auxiliar para observaciones del partido |
+
+---
+
+## 3.5 Lógica de Negocio Principal
+
+### Generación del Calendario
+
+Se utiliza el módulo `itertools.combinations` de Python para generar todos los posibles enfrentamientos entre equipos (formato todos contra todos). Los pares se distribuyen en jornadas de `n/2` partidos cada una.
+
+```python
+from itertools import combinations
+
+pares = list(combinations(equipos, 2))  # genera todos los enfrentamientos posibles
+```
+
+### Actualización de la Tabla de Posiciones
+
+Al registrar el resultado de un partido, el sistema evalúa automáticamente:
+
+```python
+if goles_local > goles_visitante:
+    equipo_local.puntos += 3      # victoria local
+elif goles_visitante > goles_local:
+    equipo_visitante.puntos += 3  # victoria visitante
+else:
+    equipo_local.puntos += 1      # empate
+    equipo_visitante.puntos += 1
+```
+
+También se actualizan: `PJ`, `PG`, `PE`, `PP`, `GF`, `GC` por equipo y el contador de goles de cada jugador marcado como goleador.
+
+---
+
+## 3.6 Estructura de Archivos del Proyecto
+
+```
+sistema-torneo-futbol/
+├── app.py                  ← Rutas y controladores Flask
+├── models.py               ← Modelos de base de datos (SQLAlchemy)
+├── requirements.txt        ← Dependencias del proyecto
+├── torneo.db               ← Base de datos SQLite (generada al ejecutar)
+├── templates/              ← Plantillas HTML (Jinja2)
+│   ├── base.html           ← Plantilla base con navbar
+│   ├── index.html          ← Panel de inicio
+│   ├── equipos/
+│   ├── jugadores/
+│   ├── calendario/
+│   ├── resultados/
+│   ├── tabla/
+│   └── reportes/
+└── docs/                   ← Documentación del proyecto
+    ├── plan_de_pruebas.md
+    ├── manual_usuario.md
+    ├── documentacion_tecnica.md
+    └── estrategia_seguimiento.md
+```

@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manual de Usuario — Torneo Interfacultades</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a1a;
+    --green-light: #2d9e2d;
+    --green-pale: #e8f5e8;
+    --green-mid: #c3e6c3;
+    --dark: #0f1a0f;
+    --gray: #4a5a4a;
+    --gray-light: #f4f7f4;
+    --white: #ffffff;
+    --accent: #00c853;
+    --warn: #ff8f00;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--gray-light); color: var(--dark); line-height: 1.7; }
+
+  .hero {
+    background: var(--dark);
+    color: white;
+    padding: 64px 80px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after { content: '📖'; position: absolute; bottom: -20px; right: 80px; font-size: 140px; opacity: 0.06; }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,200,83,0.15);
+    border: 1px solid rgba(0,200,83,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 14px; border-radius: 20px; margin-bottom: 20px;
+  }
+  .hero h1 { font-family: 'Syne', sans-serif; font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 12px; }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub { color: rgba(255,255,255,0.55); font-size: 15px; font-weight: 300; }
+  .hero-meta { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.1); }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .hero-meta-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 56px 40px; }
+  .section { margin-bottom: 56px; }
+  .section-header { display: flex; align-items: center; gap: 16px; margin-bottom: 24px; }
+  .section-number {
+    font-family: 'DM Mono', monospace; font-size: 11px;
+    color: var(--green); background: var(--green-pale);
+    border: 1px solid var(--green-mid); padding: 4px 10px; border-radius: 6px;
+  }
+  .section-title { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; }
+  p { color: var(--gray); font-size: 15px; margin-bottom: 16px; }
+  hr { border: none; border-top: 1px solid #e8f0e8; margin: 48px 0; }
+
+  /* URL box */
+  .url-box {
+    background: var(--dark);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 18px;
+    padding: 20px 28px;
+    border-radius: 10px;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .url-box::before { content: '🌐'; font-size: 20px; }
+
+  /* Nav table */
+  .nav-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .nav-table thead tr { background: var(--dark); }
+  .nav-table thead th { padding: 14px 20px; text-align: left; color: white; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-table tbody tr { border-bottom: 1px solid #f0f4f0; }
+  .nav-table tbody tr:last-child { border-bottom: none; }
+  .nav-table tbody td { padding: 14px 20px; color: var(--gray); font-size: 14px; }
+  .nav-table tbody td:first-child { font-weight: 600; color: var(--dark); }
+
+  /* Steps */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step {
+    display: flex;
+    gap: 24px;
+    padding: 28px 0;
+    border-bottom: 1px solid #e8f0e8;
+    position: relative;
+  }
+  .step:last-child { border-bottom: none; }
+  .step-number-wrap { display: flex; flex-direction: column; align-items: center; gap: 0; flex-shrink: 0; }
+  .step-number {
+    width: 44px; height: 44px;
+    background: var(--green);
+    color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 800;
+    flex-shrink: 0;
+  }
+  .step-line { width: 2px; flex: 1; background: var(--green-mid); margin-top: 8px; min-height: 20px; }
+  .step:last-child .step-line { display: none; }
+  .step-content { flex: 1; padding-top: 8px; }
+  .step-title { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 700; color: var(--dark); margin-bottom: 12px; }
+  .step-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .step-list li {
+    padding: 8px 14px 8px 36px;
+    background: var(--gray-light);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--gray);
+    position: relative;
+  }
+  .step-list li::before { content: attr(data-n); position: absolute; left: 12px; font-family: 'DM Mono', monospace; font-size: 11px; color: var(--green); font-weight: 700; }
+  .step-note {
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .step-note.warn { background: #fff8e1; color: #6a4800; border-left: 3px solid var(--warn); }
+  .step-note.info { background: #e3f2fd; color: #0d47a1; border-left: 3px solid #42a5f5; }
+
+  /* Messages table */
+  .msg-table { width: 100%; border-collapse: collapse; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+  .msg-table thead tr { background: var(--dark); }
+  .msg-table thead th { padding: 14px 20px; text-align: left; color: white; font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .msg-table tbody tr { border-bottom: 1px solid #f0f4f0; }
+  .msg-table tbody tr:last-child { border-bottom: none; }
+  .msg-table tbody td { padding: 14px 20px; font-size: 14px; color: var(--gray); vertical-align: middle; }
+  .badge-success { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #e8f5e9; color: #2e7d32; border: 1px solid #c8e6c9; }
+  .badge-warn { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #fff8e1; color: #f57f17; border: 1px solid #ffe082; }
+  .badge-danger { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; background: #ffebee; color: #c62828; border: 1px solid #ffcdd2; }
+
+  .doc-footer { background: var(--dark); color: rgba(255,255,255,0.4); text-align: center; padding: 24px; font-size: 12px; font-family: 'DM Mono', monospace; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Ingeniería de Software</div>
+  <h1>Manual Básico<br>de <span>Usuario</span></h1>
+  <p class="hero-sub">Sistema de Gestión de Torneo Interfacultades de Fútbol</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Universidad</span>
+      <span class="hero-meta-value">Universidad X</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Tecnología</span>
+      <span class="hero-meta-value">Flask + Python</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Acceso</span>
+      <span class="hero-meta-value">Navegador web</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">2.1</span>
+      <h2 class="section-title">Introducción</h2>
+    </div>
+    <p>Este manual tiene como objetivo guiar al usuario en el uso del Sistema de Gestión de Torneo Interfacultades de Fútbol. El sistema es una aplicación web accesible desde cualquier navegador moderno (Chrome, Firefox, Edge). No requiere instalación por parte del usuario final.</p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">2.2</span>
+      <h2 class="section-title">Acceso al Sistema</h2>
+    </div>
+    <p>Para acceder al sistema, abre tu navegador web e ingresa la siguiente dirección:</p>
+    <div class="url-box">http://127.0.0.1:5000</div>
+    <p>Serás redirigido al panel principal donde encontrarás un resumen del estado del torneo y las acciones rápidas disponibles.</p>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">2.3</span>
+      <h2 class="section-title">Navegación Principal</h2>
+    </div>
+    <p>La barra de navegación en la parte superior de la pantalla contiene acceso a todas las secciones del sistema:</p>
+    <table class="nav-table" style="margin-top:16px">
+      <thead><tr><th>Sección</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>🛡️ Equipos</td><td>Listado, registro y detalle de equipos</td></tr>
+        <tr><td>👤 Jugadores</td><td>Listado y registro de jugadores</td></tr>
+        <tr><td>📅 Calendario</td><td>Visualización y generación del calendario de partidos</td></tr>
+        <tr><td>📊 Tabla</td><td>Tabla de posiciones actualizada en tiempo real</td></tr>
+        <tr><td>📈 Reportes</td><td>Estadísticas del torneo y tabla de goleadores</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">2.4</span>
+      <h2 class="section-title">Guía Paso a Paso</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">1</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Registrar Equipos</div>
+          <ul class="step-list">
+            <li data-n="1">Haz clic en <strong>Equipos</strong> en la barra de navegación.</li>
+            <li data-n="2">Haz clic en el botón verde <strong>Nuevo Equipo</strong>.</li>
+            <li data-n="3">Ingresa el nombre del equipo y la facultad a la que pertenece.</li>
+            <li data-n="4">Haz clic en <strong>Registrar Equipo</strong>. Verás un mensaje de confirmación en verde.</li>
+          </ul>
+          <div class="step-note warn">⚠️ <strong>Importante:</strong> Debes registrar al menos 2 equipos antes de generar el calendario.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">2</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Registrar Jugadores</div>
+          <ul class="step-list">
+            <li data-n="1">Haz clic en <strong>Jugadores</strong> en la barra de navegación.</li>
+            <li data-n="2">Haz clic en <strong>Nuevo Jugador</strong>.</li>
+            <li data-n="3">Ingresa el nombre, número de camiseta (opcional) y selecciona su equipo.</li>
+            <li data-n="4">Haz clic en <strong>Registrar Jugador</strong>.</li>
+          </ul>
+          <div class="step-note info">📝 <strong>Nota:</strong> Registrar jugadores es opcional, pero necesario para poder marcar goleadores en los partidos.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">3</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Generar el Calendario</div>
+          <ul class="step-list">
+            <li data-n="1">Haz clic en <strong>Calendario</strong> en la barra de navegación.</li>
+            <li data-n="2">Si no hay partidos generados, verás el botón <strong>Generar Calendario</strong>.</li>
+            <li data-n="3">Haz clic en él. El sistema creará automáticamente todos los partidos en formato todos contra todos, organizados por jornadas.</li>
+          </ul>
+          <div class="step-note warn">⚠️ <strong>Importante:</strong> El calendario solo puede generarse una vez. Si necesitas regenerarlo, contacta al administrador del sistema.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">4</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Registrar Resultados</div>
+          <ul class="step-list">
+            <li data-n="1">Ve a <strong>Calendario</strong>.</li>
+            <li data-n="2">Identifica el partido a registrar (estado: <strong>Pendiente</strong>).</li>
+            <li data-n="3">Haz clic en el botón <strong>Registrar</strong> en la fila del partido.</li>
+            <li data-n="4">Ingresa los goles anotados por cada equipo.</li>
+            <li data-n="5">Selecciona los jugadores que marcaron goles (puedes seleccionar varios).</li>
+            <li data-n="6">Haz clic en <strong>Guardar Resultado</strong>.</li>
+          </ul>
+          <div class="step-note info">ℹ️ El sistema actualizará automáticamente la tabla de posiciones al guardar.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">5</div><div class="step-line"></div></div>
+        <div class="step-content">
+          <div class="step-title">Ver la Tabla de Posiciones</div>
+          <ul class="step-list">
+            <li data-n="1">Haz clic en <strong>Tabla</strong> en la barra de navegación.</li>
+            <li data-n="2">Verás la tabla ordenada por puntos. En caso de empate, el criterio de desempate es la diferencia de goles.</li>
+          </ul>
+          <div class="step-note info">🥇 Los equipos en las primeras 3 posiciones se destacan en color verde.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-number-wrap"><div class="step-number">6</div></div>
+        <div class="step-content">
+          <div class="step-title">Consultar Reportes</div>
+          <ul class="step-list">
+            <li data-n="1">Haz clic en <strong>Reportes</strong>.</li>
+            <li data-n="2">Verás el total de partidos jugados, pendientes y goles del torneo.</li>
+            <li data-n="3">La tabla de goleadores muestra los 10 jugadores con más goles en el torneo.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">2.5</span>
+      <h2 class="section-title">Mensajes del Sistema</h2>
+    </div>
+    <p>El sistema utiliza alertas con colores para informar al usuario sobre el resultado de cada acción:</p>
+    <table class="msg-table" style="margin-top:16px">
+      <thead><tr><th>Tipo</th><th>Ejemplo de Mensaje</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge-success">✅ Verde — Éxito</span></td><td>Equipo 'X' registrado exitosamente</td><td>La operación se completó sin problemas</td></tr>
+        <tr><td><span class="badge-warn">⚠️ Amarillo — Advertencia</span></td><td>El calendario ya fue generado</td><td>La acción no se realizó para evitar duplicados</td></tr>
+        <tr><td><span class="badge-danger">❌ Rojo — Error</span></td><td>Ya existe un equipo con ese nombre</td><td>Se ingresaron datos inválidos o duplicados</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  Universidad X · Ingeniería de Software · Sistema Torneo Interfacultades 2024
+</div>
+</body>
+</html>
