@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2><i class="bi bi-bar-chart-fill text-success me-2"></i>Tabla de Posiciones</h2>
+{% if equipos %}
+<div class="table-responsive">
+    <table class="table table-hover align-middle mt-3">
+        <thead>
+            <tr>
+                <th>#</th><th>Equipo</th><th>Facultad</th>
+                <th class="text-center">PJ</th><th class="text-center">G</th>
+                <th class="text-center">E</th><th class="text-center">P</th>
+                <th class="text-center">GF</th><th class="text-center">GC</th>
+                <th class="text-center">DG</th><th class="text-center">Pts</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for equipo in equipos %}
+            <tr {% if loop.index <= 3 %}class="table-success"{% endif %}>
+                <td>
+                    {% if loop.index == 1 %}<span class="badge bg-warning text-dark">🥇</span>
+                    {% elif loop.index == 2 %}<span class="badge bg-secondary">🥈</span>
+                    {% elif loop.index == 3 %}<span class="badge" style="background:#cd7f32">🥉</span>
+                    {% else %}{{ loop.index }}{% endif %}
+                </td>
+                <td class="fw-bold">{{ equipo.nombre }}</td>
+                <td><small class="text-muted">{{ equipo.facultad }}</small></td>
+                <td class="text-center">{{ equipo.partidos_jugados }}</td>
+                <td class="text-center text-success fw-bold">{{ equipo.partidos_ganados }}</td>
+                <td class="text-center">{{ equipo.partidos_empatados }}</td>
+                <td class="text-center text-danger">{{ equipo.partidos_perdidos }}</td>
+                <td class="text-center">{{ equipo.goles_favor }}</td>
+                <td class="text-center">{{ equipo.goles_contra }}</td>
+                <td class="text-center">
+                    {% set dg = equipo.goles_favor - equipo.goles_contra %}
+                    <span class="{% if dg > 0 %}text-success{% elif dg < 0 %}text-danger{% endif %} fw-bold">
+                        {% if dg > 0 %}+{% endif %}{{ dg }}
+                    </span>
+                </td>
+                <td class="text-center"><span class="badge bg-success fs-6">{{ equipo.puntos }}</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<small class="text-muted">PJ: Partidos Jugados | G: Ganados | E: Empatados | P: Perdidos | GF: Goles a Favor | GC: Goles en Contra | DG: Diferencia de Goles | Pts: Puntos</small>
+{% else %}
+<div class="alert alert-info mt-3">No hay equipos registrados aún.</div>
+{% endif %}
+{% endblock %}

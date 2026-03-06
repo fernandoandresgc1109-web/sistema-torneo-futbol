@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white"><i class="bi bi-person-plus me-1"></i>Registrar Nuevo Jugador</div>
+            <div class="card-body">
+                {% if not equipos %}
+                <div class="alert alert-warning">Primero debes <a href="{{ url_for('nuevo_equipo') }}">registrar al menos un equipo</a>.</div>
+                {% else %}
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre del Jugador</label>
+                        <input type="text" name="nombre" class="form-control" placeholder="Ej: Carlos García" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Número de Camiseta</label>
+                        <input type="number" name="numero" class="form-control" placeholder="Ej: 10" min="1" max="99">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Equipo</label>
+                        <select name="equipo_id" class="form-select" required>
+                            <option value="">-- Selecciona un equipo --</option>
+                            {% for e in equipos %}
+                            <option value="{{ e.id }}">{{ e.nombre }} ({{ e.facultad }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-1"></i>Registrar Jugador</button>
+                        <a href="{{ url_for('listar_jugadores') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

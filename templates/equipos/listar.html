@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-shield-fill text-success me-2"></i>Equipos Registrados</h2>
+    <a href="{{ url_for('nuevo_equipo') }}" class="btn btn-success"><i class="bi bi-plus-circle me-1"></i>Nuevo Equipo</a>
+</div>
+{% if equipos %}
+<div class="row g-3">
+    {% for equipo in equipos %}
+    <div class="col-md-4">
+        <div class="card h-100">
+            <div class="card-header bg-success text-white fw-bold">
+                <i class="bi bi-shield-fill me-1"></i>{{ equipo.nombre }}
+            </div>
+            <div class="card-body">
+                <p><i class="bi bi-building me-1 text-muted"></i><strong>Facultad:</strong> {{ equipo.facultad }}</p>
+                <p><i class="bi bi-people-fill me-1 text-muted"></i><strong>Jugadores:</strong> {{ equipo.jugadores|length }}</p>
+                <p><i class="bi bi-star-fill me-1 text-warning"></i><strong>Puntos:</strong> {{ equipo.puntos }}</p>
+            </div>
+            <div class="card-footer">
+                <a href="{{ url_for('detalle_equipo', id=equipo.id) }}" class="btn btn-sm btn-outline-success w-100">Ver Detalle</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="alert alert-info">No hay equipos registrados aún. <a href="{{ url_for('nuevo_equipo') }}">¡Registra el primero!</a></div>
+{% endif %}
+{% endblock %}

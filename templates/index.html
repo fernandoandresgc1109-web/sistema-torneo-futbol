@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card text-white" style="background: linear-gradient(135deg, #1a7a1a, #2d9e2d);">
+                <div class="card-body py-4">
+                    <h1 class="card-title fw-bold"><i class="bi bi-trophy-fill me-2"></i>Torneo Interfacultades de
+                        Fútbol</h1>
+                    <p class="card-text fs-5">Sistema de gestión de partidos, equipos y estadísticas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        <div class="col-md-3 col-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-shield-fill fs-1 text-success"></i>
+                    <h4 class="mt-2">{{ equipos|length }}</h4>
+                    <p class="text-muted mb-0">Equipos Registrados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-calendar3 fs-1 text-primary"></i>
+                    <h4 class="mt-2">{{ partidos|length }}</h4>
+                    <p class="text-muted mb-0">Partidos Programados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-check-circle-fill fs-1 text-info"></i>
+                    <h4 class="mt-2">{{ partidos|selectattr('jugado')|list|length }}</h4>
+                    <p class="text-muted mb-0">Partidos Jugados</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 col-6">
+            <div class="card text-center h-100">
+                <div class="card-body">
+                    <i class="bi bi-hourglass-split fs-1 text-warning"></i>
+                    <h4 class="mt-2">{{ partidos|rejectattr('jugado')|list|length }}</h4>
+                    <p class="text-muted mb-0">Pendientes</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4 g-3">
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white"><i class="bi bi-lightning-fill me-1"></i>Acciones Rápidas
+                </div>
+                <div class="card-body d-grid gap-2">
+                    <a href="{{ url_for('nuevo_equipo') }}" class="btn btn-outline-success"><i
+                            class="bi bi-plus-circle me-1"></i>Registrar Equipo</a>
+                    <a href="{{ url_for('nuevo_jugador') }}" class="btn btn-outline-primary"><i
+                            class="bi bi-person-plus me-1"></i>Registrar Jugador</a>
+                    <a href="{{ url_for('ver_calendario') }}" class="btn btn-outline-secondary"><i
+                            class="bi bi-calendar3 me-1"></i>Ver Calendario</a>
+                    <a href="{{ url_for('ver_tabla') }}" class="btn btn-outline-dark"><i
+                            class="bi bi-bar-chart me-1"></i>Ver Tabla de Posiciones</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white"><i class="bi bi-clock-history me-1"></i>Últimos Partidos
+                </div>
+                <div class="card-body p-0">
+                    {% set jugados = partidos|selectattr('jugado')|list %}
+                    {% if jugados %}
+                        <ul class="list-group list-group-flush">
+                            {% for p in jugados[-5:] %}
+                                <li class="list-group-item d-flex justify-content-between">
+                                    <span>{{ p.equipo_local.nombre }} vs {{ p.equipo_visitante.nombre }}</span>
+                                    <span class="badge bg-dark">{{ p.goles_local }} - {{ p.goles_visitante }}</span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <div class="p-3 text-muted text-center">No hay partidos jugados aún.</div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

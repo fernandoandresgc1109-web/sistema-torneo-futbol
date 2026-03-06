@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><i class="bi bi-calendar3 text-primary me-2"></i>Calendario de Partidos</h2>
+        {% if not partidos %}
+            <form method="POST" action="{{ url_for('generar_calendario') }}">
+                <button type="submit" class="btn btn-success"><i class="bi bi-shuffle me-1"></i>Generar Calendario
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    {% if partidos %}
+        {% set jornadas = partidos | map(attribute='jornada') | list | unique | sort %}
+        {% for jornada in jornadas %}
+            <div class="card mb-3">
+                <div class="card-header bg-dark text-white fw-bold">
+                    <i class="bi bi-calendar-week me-1"></i>Jornada {{ jornada }}
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                        <tr>
+                            <th>Local</th>
+                            <th class="text-center">vs</th>
+                            <th>Visitante</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Resultado</th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for p in partidos if p.jornada == jornada %}
+                            <tr>
+                                <td class="fw-bold">{{ p.equipo_local.nombre }}</td>
+                                <td class="text-center text-muted">⚽</td>
+                                <td class="fw-bold">{{ p.equipo_visitante.nombre }}</td>
+                                <td class="text-center">
+                                    {% if p.jugado %}
+                                        <span class="badge bg-success">Jugado</span>
+                                    {% else %}
+                                        <span class="badge bg-warning text-dark">Pendiente</span>
+                                    {% endif %}
+                                </td>
+                                <td class="text-center fw-bold">
+                                    {% if p.jugado %}{{ p.goles_local }} - {{ p.goles_visitante }}{% else %}-{% endif %}
+                                </td>
+                                <td>
+                                    {% if not p.jugado %}
+                                        <a href="{{ url_for('registrar_resultado', partido_id=p.id) }}"
+                                           class="btn btn-sm btn-outline-primary">Registrar</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            <i class="bi bi-info-circle me-1"></i>No hay calendario generado. Asegúrate de tener al menos 2 equipos y
+            presiona <strong>Generar Calendario</strong>.
+        </div>
+    {% endif %}
+{% endblock %}

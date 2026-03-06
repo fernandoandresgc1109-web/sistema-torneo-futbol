@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2><i class="bi bi-file-earmark-bar-graph text-info me-2"></i>Reportes del Torneo</h2>
+
+<div class="row mt-3 g-3">
+    <div class="col-md-4">
+        <div class="card text-center border-success">
+            <div class="card-body">
+                <i class="bi bi-check-circle-fill fs-1 text-success"></i>
+                <h3 class="mt-2">{{ partidos_jugados }}</h3>
+                <p class="text-muted mb-0">Partidos Jugados</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center border-warning">
+            <div class="card-body">
+                <i class="bi bi-hourglass-split fs-1 text-warning"></i>
+                <h3 class="mt-2">{{ partidos_pendientes }}</h3>
+                <p class="text-muted mb-0">Partidos Pendientes</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card text-center border-danger">
+            <div class="card-body">
+                <i class="bi bi-emoji-smile fs-1 text-danger"></i>
+                <h3 class="mt-2">{{ total_goles }}</h3>
+                <p class="text-muted mb-0">Total de Goles en el Torneo</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card mt-4">
+    <div class="card-header bg-warning text-dark fw-bold">
+        <i class="bi bi-trophy-fill me-1"></i>Tabla de Goleadores
+    </div>
+    <div class="card-body p-0">
+        {% if goleadores %}
+        <table class="table table-hover mb-0 align-middle">
+            <thead>
+                <tr><th>Pos.</th><th>Jugador</th><th>Equipo</th><th class="text-center">Goles</th></tr>
+            </thead>
+            <tbody>
+                {% for j in goleadores %}
+                <tr>
+                    <td>
+                        {% if loop.index == 1 %}🥇
+                        {% elif loop.index == 2 %}🥈
+                        {% elif loop.index == 3 %}🥉
+                        {% else %}{{ loop.index }}{% endif %}
+                    </td>
+                    <td class="fw-bold">{{ j.nombre }}</td>
+                    <td><span class="badge bg-success">{{ j.equipo.nombre }}</span></td>
+                    <td class="text-center"><span class="badge bg-warning text-dark fs-6">⚽ {{ j.goles }}</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="p-3 text-muted text-center">Aún no hay goles registrados.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

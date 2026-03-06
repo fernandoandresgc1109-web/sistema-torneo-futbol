@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-success text-white"><i class="bi bi-shield-plus me-1"></i>Registrar Nuevo Equipo</div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Nombre del Equipo</label>
+                        <input type="text" name="nombre" class="form-control" placeholder="Ej: Los Tigres" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Facultad</label>
+                        <input type="text" name="facultad" class="form-control" placeholder="Ej: Facultad de Ingeniería" required>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-1"></i>Registrar Equipo</button>
+                        <a href="{{ url_for('listar_equipos') }}" class="btn btn-outline-secondary">Cancelar</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
