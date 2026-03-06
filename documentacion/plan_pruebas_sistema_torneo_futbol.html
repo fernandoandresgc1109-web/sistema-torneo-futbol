@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de Pruebas — Torneo Interfacultades</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a1a;
+    --green-light: #2d9e2d;
+    --green-pale: #e8f5e8;
+    --green-mid: #c3e6c3;
+    --dark: #0f1a0f;
+    --gray: #4a5a4a;
+    --gray-light: #f4f7f4;
+    --white: #ffffff;
+    --accent: #00c853;
+    --warn: #ff8f00;
+    --danger: #d32f2f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--gray-light);
+    color: var(--dark);
+    line-height: 1.7;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--dark);
+    color: white;
+    padding: 64px 80px 56px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -60px; right: -60px;
+    width: 320px; height: 320px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,200,83,0.18) 0%, transparent 70%);
+  }
+  .hero::after {
+    content: '⚽';
+    position: absolute;
+    bottom: -20px; right: 80px;
+    font-size: 140px;
+    opacity: 0.06;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(0,200,83,0.15);
+    border: 1px solid rgba(0,200,83,0.3);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+  .hero h1 span { color: var(--accent); }
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 15px;
+    font-weight: 300;
+    margin-top: 8px;
+  }
+  .hero-meta {
+    display: flex;
+    gap: 32px;
+    margin-top: 40px;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-meta-item { display: flex; flex-direction: column; gap: 4px; }
+  .hero-meta-label { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); }
+  .hero-meta-value { font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.85); }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1000px; margin: 0 auto; padding: 56px 40px; }
+
+  /* ── SECTIONS ── */
+  .section { margin-bottom: 56px; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .section-number {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--green);
+    background: var(--green-pale);
+    border: 1px solid var(--green-mid);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dark);
+  }
+
+  p { color: var(--gray); font-size: 15px; margin-bottom: 16px; }
+
+  /* ── SUBSECTIONS ── */
+  .subsection { margin: 28px 0; }
+  .subsection-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .subsection-title::before {
+    content: '';
+    width: 3px; height: 16px;
+    background: var(--accent);
+    border-radius: 2px;
+    display: inline-block;
+  }
+
+  /* ── LIST ── */
+  .doc-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .doc-list li {
+    padding: 10px 16px 10px 44px;
+    background: white;
+    border-radius: 8px;
+    border-left: 3px solid var(--green-mid);
+    font-size: 14px;
+    color: var(--gray);
+    position: relative;
+  }
+  .doc-list li::before {
+    content: '→';
+    position: absolute;
+    left: 16px;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* ── STRATEGY CARDS ── */
+  .strategy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 16px;
+  }
+  .strategy-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border-top: 3px solid var(--green);
+  }
+  .strategy-card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--dark);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .strategy-card-icon {
+    width: 28px; height: 28px;
+    background: var(--green-pale);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+  }
+  .strategy-card p { font-size: 13px; margin: 0; }
+
+  /* ── TEST TABLE ── */
+  .table-wrapper {
+    overflow-x: auto;
+    border-radius: 12px;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.07);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 13px;
+  }
+  thead tr {
+    background: var(--dark);
+  }
+  thead th {
+    padding: 14px 16px;
+    text-align: left;
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  tbody tr { border-bottom: 1px solid #f0f4f0; transition: background 0.15s; }
+  tbody tr:hover { background: var(--green-pale); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody td { padding: 12px 16px; color: var(--gray); vertical-align: middle; }
+  tbody td:first-child {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--green);
+    font-weight: 600;
+  }
+  .badge-module {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--green-pale);
+    color: var(--green);
+    border: 1px solid var(--green-mid);
+  }
+  .badge-ok {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #c8e6c9;
+    white-space: nowrap;
+  }
+
+  /* ── RESULTS SUMMARY ── */
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .result-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  }
+  .result-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--green);
+    display: block;
+    line-height: 1;
+  }
+  .result-label { font-size: 12px; color: var(--gray); margin-top: 6px; }
+
+  /* ── NOTE BOX ── */
+  .note-box {
+    background: #fff8e1;
+    border-left: 4px solid var(--warn);
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #5a4000;
+    margin-top: 16px;
+  }
+  .note-box strong { color: var(--warn); }
+
+  /* ── DIVIDER ── */
+  hr { border: none; border-top: 1px solid #e8f0e8; margin: 48px 0; }
+
+  /* ── FOOTER ── */
+  .doc-footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">Ingeniería de Software</div>
+  <h1>Plan de <span>Pruebas</span><br>del Sistema</h1>
+  <p class="hero-sub">Sistema de Gestión de Torneo Interfacultades de Fútbol</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Universidad</span>
+      <span class="hero-meta-value">Universidad X</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Año</span>
+      <span class="hero-meta-value">2024</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Total casos</span>
+      <span class="hero-meta-value">15 casos</span>
+    </div>
+    <div class="hero-meta-item">
+      <span class="hero-meta-label">Resultado</span>
+      <span class="hero-meta-value">100% Aprobado</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 1.1 Introducción -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">1.1</span>
+      <h2 class="section-title">Introducción</h2>
+    </div>
+    <p>Este plan de pruebas define la estrategia, el alcance, los recursos y el cronograma de las actividades de prueba para el Sistema de Gestión de Torneo Interfacultades de Fútbol. El objetivo principal es garantizar que el sistema cumple con los requisitos funcionales definidos en la fase de análisis y que opera correctamente bajo las condiciones de uso esperadas.</p>
+  </div>
+
+  <hr>
+
+  <!-- 1.2 Alcance -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">1.2</span>
+      <h2 class="section-title">Alcance de las Pruebas</h2>
+    </div>
+    <p>Las pruebas cubrirán los siguientes módulos del sistema:</p>
+    <ul class="doc-list">
+      <li><strong>Gestión de Equipos:</strong> registro, listado y visualización de detalles.</li>
+      <li><strong>Gestión de Jugadores:</strong> registro y visualización por equipo.</li>
+      <li><strong>Calendario:</strong> generación automática de partidos (todos contra todos).</li>
+      <li><strong>Resultados:</strong> registro de resultados y marcación de goleadores.</li>
+      <li><strong>Tabla de Posiciones:</strong> actualización automática de puntos y estadísticas.</li>
+      <li><strong>Reportes:</strong> tabla de goleadores y estadísticas generales.</li>
+    </ul>
+  </div>
+
+  <hr>
+
+  <!-- 1.3 Estrategia -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">1.3</span>
+      <h2 class="section-title">Estrategia de Pruebas</h2>
+    </div>
+    <p>Se aplicarán los siguientes tipos de prueba, en el orden del ciclo de vida del software:</p>
+    <div class="strategy-grid">
+      <div class="strategy-card">
+        <div class="strategy-card-title"><div class="strategy-card-icon">🔬</div>Pruebas Unitarias</div>
+        <p>Verifican el correcto funcionamiento de funciones individuales de la lógica de negocio de forma aislada. Ej: cálculo de puntos al registrar un resultado (victoria = 3 pts, empate = 1 pt).</p>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-card-title"><div class="strategy-card-icon">🔗</div>Pruebas de Integración</div>
+        <p>Verifican que los módulos funcionen correctamente al interactuar entre sí. Ej: que al registrar el resultado de un partido, la tabla de posiciones se actualice correctamente.</p>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-card-title"><div class="strategy-card-icon">⬛</div>Pruebas Funcionales (Caja Negra)</div>
+        <p>Se valida que cada funcionalidad cumpla los requisitos desde la perspectiva del usuario, sin conocer el código interno. Se basan en los casos de la sección 1.4.</p>
+      </div>
+      <div class="strategy-card">
+        <div class="strategy-card-title"><div class="strategy-card-icon">🖥️</div>Pruebas de Interfaz de Usuario</div>
+        <p>Se verifica que la interfaz web sea intuitiva, que los formularios validen datos correctamente y que los mensajes de error y éxito se muestren adecuadamente.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 1.4 Casos de Prueba -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">1.4</span>
+      <h2 class="section-title">Casos de Prueba</h2>
+    </div>
+    <p>A continuación se presentan los casos de prueba definidos para los módulos principales del sistema:</p>
+    <div class="table-wrapper">
+      <table>
+        <thead>
+          <tr>
+            <th>CP-ID</th><th>Módulo</th><th>Descripción</th><th>Datos de Entrada</th><th>Resultado Esperado</th><th>Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>CP-01</td><td><span class="badge-module">Equipos</span></td><td>Registrar equipo con datos válidos</td><td>Nombre: 'Los Tigres', Facultad: 'Ingeniería'</td><td>Equipo registrado, mensaje de éxito visible</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-02</td><td><span class="badge-module">Equipos</span></td><td>Registrar equipo con nombre duplicado</td><td>Nombre: 'Los Tigres' (ya existe)</td><td>Mensaje de error: 'Ya existe un equipo con ese nombre'</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-03</td><td><span class="badge-module">Equipos</span></td><td>Registrar equipo con campos vacíos</td><td>Nombre: '', Facultad: ''</td><td>Formulario no se envía, campos requeridos resaltados</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-04</td><td><span class="badge-module">Jugadores</span></td><td>Registrar jugador con equipo válido</td><td>Nombre: 'Juan Pérez', #10, Equipo: 'Los Tigres'</td><td>Jugador registrado y visible en la lista</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-05</td><td><span class="badge-module">Jugadores</span></td><td>Registrar jugador sin seleccionar equipo</td><td>Nombre: 'Juan Pérez', equipo: no seleccionado</td><td>Formulario no se envía, campo equipo requerido</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-06</td><td><span class="badge-module">Calendario</span></td><td>Generar calendario con 4 equipos</td><td>4 equipos previamente registrados</td><td>Se generan 6 partidos (4×3/2), organizados en jornadas</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-07</td><td><span class="badge-module">Calendario</span></td><td>Generar calendario con menos de 2 equipos</td><td>0 o 1 equipos registrados</td><td>Mensaje de error: 'Se necesitan al menos 2 equipos'</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-08</td><td><span class="badge-module">Calendario</span></td><td>Intentar regenerar calendario ya existente</td><td>Calendario ya generado</td><td>Mensaje de advertencia: calendario ya fue generado</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-09</td><td><span class="badge-module">Resultados</span></td><td>Registrar resultado con victoria local 3-1</td><td>Goles local: 3, Goles visitante: 1</td><td>Equipo local recibe 3 puntos, tabla actualizada</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-10</td><td><span class="badge-module">Resultados</span></td><td>Registrar resultado con empate 1-1</td><td>Goles local: 1, Goles visitante: 1</td><td>Ambos equipos reciben 1 punto, estadísticas correctas</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-11</td><td><span class="badge-module">Resultados</span></td><td>Registrar goleadores del partido</td><td>Seleccionar 2 jugadores como goleadores</td><td>Goles de los jugadores seleccionados se incrementan en 1</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-12</td><td><span class="badge-module">Resultados</span></td><td>Intentar registrar resultado de partido ya jugado</td><td>Partido con estado 'Jugado'</td><td>Mensaje de advertencia, no se permite el re-registro</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-13</td><td><span class="badge-module">Tabla</span></td><td>Verificar orden de la tabla por puntos</td><td>3 equipos con 6, 4, 1 puntos respectivamente</td><td>Tabla ordenada de mayor a menor puntos</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-14</td><td><span class="badge-module">Tabla</span></td><td>Verificar diferencia de goles como criterio de desempate</td><td>2 equipos con mismos puntos, diferente dif. goles</td><td>El de mayor diferencia de goles aparece primero</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+          <tr><td>CP-15</td><td><span class="badge-module">Reportes</span></td><td>Verificar tabla de goleadores con datos reales</td><td>Jugadores con goles registrados</td><td>Lista de top 10 goleadores en orden descendente</td><td><span class="badge-ok">✅ Aprobado</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 1.5 Evidencias -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">1.5</span>
+      <h2 class="section-title">Evidencias Simuladas de Resultados</h2>
+    </div>
+    <p>Las evidencias de prueba se documentan mediante capturas de pantalla del sistema en ejecución. Resumen de resultados obtenidos:</p>
+    <div class="results-grid">
+      <div class="result-card">
+        <span class="result-number">15</span>
+        <div class="result-label">Casos ejecutados</div>
+      </div>
+      <div class="result-card">
+        <span class="result-number" style="color:#2e7d32">15</span>
+        <div class="result-label">Casos aprobados</div>
+      </div>
+      <div class="result-card">
+        <span class="result-number" style="color:#d32f2f">0</span>
+        <div class="result-label">Casos fallidos</div>
+      </div>
+      <div class="result-card">
+        <span class="result-number" style="color:#ff8f00">3</span>
+        <div class="result-label">Defectos corregidos</div>
+      </div>
+    </div>
+    <ul class="doc-list">
+      <li>Campos no validados en formularios</li>
+      <li>Calendario sin restricción de duplicados</li>
+      <li>Diferencia de goles no contemplada como criterio de desempate</li>
+    </ul>
+    <div class="note-box">
+      <strong>📁 Nota:</strong> Las capturas de pantalla de la ejecución de cada caso de prueba se encuentran en la carpeta <code>/docs/evidencias/</code> del repositorio de GitHub.
+    </div>
+  </div>
+
+</div>
+
+<div class="doc-footer">
+  Universidad X · Ingeniería de Software · Sistema Torneo Interfacultades 2024
+</div>
+
+</body>
+</html>
