@@ -101,6 +101,14 @@ def generar_calendario():
     flash('Calendario generado exitosamente.', 'success')
     return redirect(url_for('ver_calendario'))
 
+@app.route('/calendario/eliminar', methods=['POST'])
+def eliminar_calendario():
+    Partido.query.delete()
+    db.session.commit()
+    flash('Calendario eliminado. Ahora puedes generar uno nuevo.', 'info')
+    return redirect(url_for('ver_calendario'))
+
+
 # ===================== RESULTADOS =====================
 @app.route('/resultados')
 def listar_resultados():

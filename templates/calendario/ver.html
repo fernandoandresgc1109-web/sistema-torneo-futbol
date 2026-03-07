@@ -4,7 +4,8 @@
         <h2><i class="bi bi-calendar3 text-primary me-2"></i>Calendario de Partidos</h2>
         {% if not partidos %}
             <form method="POST" action="{{ url_for('generar_calendario') }}">
-                <button type="submit" class="btn btn-success"><i class="bi bi-shuffle me-1"></i>Generar Calendario
+                <button type="submit" class="btn btn-success">
+                    <i class="bi bi-shuffle me-1"></i>Generar Calendario
                 </button>
             </form>
         {% endif %}
@@ -58,10 +59,21 @@
                 </div>
             </div>
         {% endfor %}
+
+        <!-- Botones de acción cuando ya hay calendario -->
+        <div class="d-flex gap-2 mt-3">
+            <form action="{{ url_for('generar_calendario') }}" method="post">
+                <button type="submit" class="btn btn-success">Generar calendario</button>
+            </form>
+            <form action="{{ url_for('eliminar_calendario') }}" method="post">
+                <button type="submit" class="btn btn-danger">Eliminar calendario</button>
+            </form>
+        </div>
+
     {% else %}
         <div class="alert alert-info">
-            <i class="bi bi-info-circle me-1"></i>No hay calendario generado. Asegúrate de tener al menos 2 equipos y
-            presiona <strong>Generar Calendario</strong>.
+            <i class="bi bi-info-circle me-1"></i>No hay calendario generado. 
+            Asegúrate de tener al menos 2 equipos y presiona <strong>Generar Calendario</strong>.
         </div>
     {% endif %}
 {% endblock %}
